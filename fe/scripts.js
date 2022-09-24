@@ -77,10 +77,10 @@ function displayProducts(productList){
         <div class="product-container">
             <h3>${element.codigo}</h3>
             <h3>${element.descripcion}</h3>
-            <h3>Rubro</h3>
-            <h3>Subrubro</h3>
-            <h3>${element.precio}</h3>
-            <h3>${element.stock}</h3>
+            <h3>Rubro: ${element.rubro}</h3>
+            <h3>Subrubro: ${element.subrubro}</h3>
+            <h3>precio: $${element.precio}</h3>
+            <h3>stock: ${element.stock}</h3>
             <button id="btn-add" class="button-add" onclick="add(${element.codigo})">SALIDA</button> 
             
             <button id="btn-addE " class="button-entrar" onclick="addEntrada(${element.codigo})">ENTRADA</button> 
@@ -111,12 +111,12 @@ function displayProductsEncontrados(productoEncontrado){
     let productoHTML = 
     `
         <div class="product-container">
-            <h3>${productoEncontrado.codigo}</h3>
+            <h3>Codigo: ${productoEncontrado.codigo}</h3>
             <h3>${productoEncontrado.descripcion}</h3>
-            <h3>Rubro</h3>
-            <h3>Subrubro</h3>
-            <h3>${productoEncontrado.precio}</h3>
-            <h3>${productoEncontrado.stock}</h3>
+            <h3>Rubro: ${productoEncontrado.rubro}</h3>
+            <h3>Subrubro: ${productoEncontrado.subrubro}</h3>
+            <h3>Precio: $${productoEncontrado.precio}</h3>
+            <h3>Stock: ${productoEncontrado.stock}</h3>
         <button id="btn-add" class="button-add" onclick="add(${productoEncontrado.codigo})">SALIDA</button> 
        
         <button id="btn-addE " class="button-entrar" onclick="addEntrada(${productoEncontrado.codigo})">ENTRADA</button> 
