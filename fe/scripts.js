@@ -4,6 +4,7 @@ let findProductByCodigoButton= "";
 let productList = [];
 
 let carrito = [];
+let carritoEntrada = []
 let total = 0;
 
 
@@ -12,7 +13,15 @@ function add(codigo) {
     console.log(codigo);
     carrito.push(codigo);
     //total = total + precio;
-    // document.getElementById("checkout").innerHTML = `Pagar $${total}`
+    document.getElementById("checkout").innerHTML = `CONFIRMAR VENTA ${carrito.length}`
+    
+
+}
+
+function addEntrada(codigo){
+    console.log("entrada de "+codigo)
+    carritoEntrada.push(codigo);
+    document.getElementById("checkoutSumarStock").innerHTML = `CONFIRMAR ENTRADA STOCK ${carritoEntrada.length}`
 }
 
 async function pay() { //metodo post al back
@@ -32,7 +41,31 @@ async function pay() { //metodo post al back
     carrito = [];
     total = 0;
     await fetchProducts();
-    document.getElementById("checkout").innerHTML = `Pagar $${total}`
+    let codigo = document.getElementById("codigoByTeclado").valueAsNumber
+    findProductByCodigo(codigo)
+    document.getElementById("checkout").innerHTML = `CONFIRMAR VENTA ${carrito.length}`
+}
+
+async function entrarProducto() { //metodo post al back
+    try{
+        const productList = await (await fetch("/api/entrarProducto",{
+            method: "post",
+            body: JSON.stringify(carritoEntrada),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })).json();
+    }
+    catch {
+        window.alert("falla funcion ENTRAR()");
+    }
+
+    carritoEntrada = [];
+    total = 0;
+    await fetchProducts();
+    document.getElementById("checkoutSumarStock").innerHTML = `CONIFIRMAR SUMAR STOCK${carrito.length}`
+    let codigo = document.getElementById("codigoByTeclado").valueAsNumber
+    findProductByCodigo(codigo)
 }
 
 
@@ -48,8 +81,10 @@ function displayProducts(productList){
             <h3>Subrubro</h3>
             <h3>${element.precio}</h3>
             <h3>${element.stock}</h3>
-        <button class="button-add" onclick="add(${element.codigo})">Agregar</button> 
-        </div>
+            <button id="btn-add" class="button-add" onclick="add(${element.codigo})">SALIDA</button> 
+            
+            <button id="btn-addE " class="button-entrar" onclick="addEntrada(${element.codigo})">ENTRADA</button> 
+            </div>
         `
         document.getElementById("page-content").innerHTML = productsHTML;
         
@@ -67,6 +102,11 @@ async function fetchProducts(){
    
 }
 
+async function fetchGlobalProducts(){
+    const productListGlobales = await (await fetch("/api/productsGlobales")).json();
+    return productListGlobales
+}
+
 function displayProductsEncontrados(productoEncontrado){
     let productoHTML = 
     `
@@ -77,7 +117,9 @@ function displayProductsEncontrados(productoEncontrado){
             <h3>Subrubro</h3>
             <h3>${productoEncontrado.precio}</h3>
             <h3>${productoEncontrado.stock}</h3>
-        <button class="button-add" onclick="add(${productoEncontrado.codigo})">Agregar</button> 
+        <button id="btn-add" class="button-add" onclick="add(${productoEncontrado.codigo})">SALIDA</button> 
+       
+        <button id="btn-addE " class="button-entrar" onclick="addEntrada(${productoEncontrado.codigo})">ENTRADA</button> 
         </div>
         `
         document.getElementById("producto-encontrado").innerHTML = productoHTML;
@@ -108,7 +150,14 @@ function findProductByCodigo(){
 //--- esta en el navegador no se puede usar desde node
 
 
-
+function mostrarStock(){
+    document.getElementById("page-content").classList.remove("no-mostar")
+    document.getElementsByClassName("boton").classList.add("no-mostar")
+    document.getElementsByClassName("boton").classList.add("no-mostar")
+}
+function esconderStock(){
+    document.getElementById("page-content").classList.add("no-mostar")
+}
 
 
 window.onload = async()=> {
@@ -116,5 +165,6 @@ window.onload = async()=> {
     //console.log(productList)
     //displayProducts(productList);
     await fetchProducts()
+    //await fetchGlobalProducts() 
     document.getElementById("page-content").classList.add("no-mostar")
 }

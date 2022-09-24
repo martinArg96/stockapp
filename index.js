@@ -31,6 +31,10 @@ app.get("/api/products", async (req, res) => {
   res.send(await repository.read());
 });
 
+app.get("/api/productsGlobales", async (req, res) => {
+  res.send(await repository.readGlobalProducts());
+});
+
 // app.post("/api/pay", async (req, res) => {
 //   const codigos = req.body;
 //   const procutsCopy = await repository.read();
@@ -68,9 +72,32 @@ app.post("/api/pay", async (req, res) => {
     }
   });
 
+  app.post("/api/entrarProducto", async (req, res) => {
+    const codigos = req.body;
+    const productsCopy = await repository.read();
+  
+    let error = false;
+    codigos.forEach((codigo) => {
+      const product = productsCopy.find((p) => p.codigo === codigo);
+      if (product.stock > 0) {
+        product.stock++;
+      } else {
+        error = true;
+      }
+    });
+  
+    if (error) {
+      res.send("error al agregar producto").statusCode(400);
+    }
+    else {
+      await repository.write(productsCopy);
+      res.send(productsCopy);
+    }
+  });
 
 
-
+  
+  
 
 
 

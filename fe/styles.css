@@ -15,6 +15,8 @@ button {
     background-color: #2196F3;
     border: 1px solid black;
     position: relative;
+    display: flex;
+    justify-content: space-around;
 }
 
 .page-nav h1 {
@@ -26,13 +28,26 @@ button {
     color: black;
     border: 2px solid #008CBA; /* Blue */
     transition-duration: 0.4s;
-    position: absolute;
-    right: 15px;
-    bottom: 15px;
+   
 }
+
+
 
 .button-checkout:hover {
     background-color: #008CBA; /* Blue */
+    color: white;
+}
+
+.button-checkoutSUM{
+    background-color: white;
+    color: black;
+    border: 2px solid #ba1c00; /* Blue */
+    transition-duration: 0.4s;
+    
+}
+
+.button-checkoutSUM:hover {
+    background-color: #489f45; /* Blue */
     color: white;
 }
 
@@ -69,15 +84,24 @@ button {
     color: black;
     border: 2px solid #4CAF50; /* Green */
     transition-duration: 0.4s;
-    position: absolute;
-    right: 15px;
-    bottom: 10px;
+   
 }
-  
 .button-add:hover {
     background-color: #4CAF50; /* Green */
     color: white;
 }
+.button-entrar {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50; /* Green */
+    transition-duration: 0.4s;
+}
+  
+.button-entrar:hover {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
 
 
 .no-mostar{

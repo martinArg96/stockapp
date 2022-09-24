@@ -27,6 +27,26 @@ async function read() {
 
   return products;
 }
+async function readGlobalProducts() {
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: "1gxp90SohhV0Yz_Mh4kLaEfBDxrN5HJ6I6ipz4fhcCgo",
+    range: "Hoja1!A2:B6000",
+  });
+
+  const rows = response.data.values || [];//el OR es porque si la lista estaba vacia se romppia
+  const productsGlobales = rows.map((row) => ({
+    codigo: +row[0],
+    descripcion: row[1],
+    rubro: +row[2],
+    subrubro: +row[3],
+    precio: +row[4],
+    stock: +row[5]
+  }));
+
+  return productsGlobales;
+}
+
+
 
 async function write(products) {
   let values = products.map((p) => [p.codigo, p.descripcion, p.rubro, p.subrubro, p.precio, p.stock]);
@@ -97,5 +117,6 @@ module.exports = {
   writeOrders,
   updateOrderByPreferenceId,
   readOrders,
+  readGlobalProducts,
 };
 

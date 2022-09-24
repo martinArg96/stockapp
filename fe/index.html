@@ -7,16 +7,32 @@
 <body>
     <div class="page-nav">
         <h1>Market Thor</h1>
-        <button id="checkout" class="button-checkout" onclick="pay()">Pagar</button>
+        <button id="checkout" class="button-checkout" onclick="pay()">VENTA</button>
+        <button id="checkoutSumarStock" class="button-checkoutSUM" onclick="entrarProducto()">SUMAR STOCK</button>
     </div>
-    <div id="page-content" class="page-content">
+   
        
 
         
     </div>
     <div class="entrada-stock" id="entrada-stock">
-        <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="7790580160807">
-       <button id="btn-buscar-codigo" class="btn-buscar-codigo" onclick="findProductByCodigo(7790580160807)" >Buscar</button>
+        <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="ingrese codigo de barras">
+        <!-- guarda con findproduct -->
+       <button id="btn-buscar-codigo" class="btn-buscar-codigo" onclick="findProductByCodigo(7790580160807)" >Buscar</button> 
        <div id="producto-encontrado"></div>
     </div>
+    <div>
+        <h2>codigos de prueba</h2>
+        
+        <ul>
+            <li>7622210791023</li>
+            <li>7891167011748</li>
+            <li>7622300840259</li>
+        </ul>
+    </div>
+    <div>
+        <button onclick="mostrarStock()" >MOSTRAR STOCK</button>
+        <button onclick="esconderStock()" >ESCONDER STOCK</button>
+    </div>
+    <div id="page-content" class="page-content">
 </body>
