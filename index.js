@@ -46,11 +46,11 @@ app.get("/api/products", async (req, res) => {
 // });
 
 app.post("/api/pay", async (req, res) => {
-    const ids = req.body;
+    const codigos = req.body;
     const productsCopy = await repository.read();
   
     let error = false;
-    ids.forEach((codigo) => {
+    codigos.forEach((codigo) => {
       const product = productsCopy.find((p) => p.codigo === codigo);
       if (product.stock > 0) {
         product.stock--;
@@ -67,6 +67,11 @@ app.post("/api/pay", async (req, res) => {
       res.send(productsCopy);
     }
   });
+
+
+
+
+
 
 
 
