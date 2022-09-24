@@ -1,3 +1,5 @@
+let productList = [];
+
 let carrito = [];
 let total = 0;
 
@@ -40,7 +42,7 @@ function displayProducts(productList){
             <h3>Rubro</h3>
             <h3>Subrubro</h3>
             <h3>${element.precio}</h3>
-            <h3>${element.cantidad}</h3>
+            <h3>${element.stock}</h3>
         <button class="button-add" onclick="add(${element.codigo})">Agregar</button> 
         </div>
         `
@@ -50,13 +52,27 @@ function displayProducts(productList){
 }
 
 
+
+async function fetchProducts(){
+    productList = await (await fetch("/api/products")).json();
+    displayProducts(productList);
+}
+
+
+
+
+
+
 //--- window onload se llama cuadno la ventana se termina de cargar
 //--- esta en el navegador no se puede usar desde node
 
 
 
+
+
 window.onload = async()=> {
-    const productList = await(await fetch('/api/products')).json();
-    console.log(productList)
-    displayProducts(productList);
+    //const productList = await(await fetch('/api/products')).json();
+    //console.log(productList)
+    //displayProducts(productList);
+    await fetchProducts()
 }
