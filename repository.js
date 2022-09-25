@@ -64,13 +64,9 @@ async function write(products) {
 
 async function writeOrders(orders) {
   let values = orders.map((order) => [
-    order.date,
-    order.preferenceId,
-    order.shipping.name,
-    order.shipping.email,
-    JSON.stringify(order.items),
-    JSON.stringify(order.shipping),
-    order.status,
+    order.items,
+    order.fecha,
+    
   ]);
 
   const resource = {
@@ -78,7 +74,7 @@ async function writeOrders(orders) {
   };
   const result = await sheets.spreadsheets.values.update({
     spreadsheetId: "1gxp90SohhV0Yz_Mh4kLaEfBDxrN5HJ6I6ipz4fhcCgo",
-    range: "EntradasThorMarket!A2:H",
+    range: "EntradasThorMarket!A2:C",
     valueInputOption: "RAW",
     resource,
   });
@@ -87,22 +83,56 @@ async function writeOrders(orders) {
 async function readOrders() {
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: "1gxp90SohhV0Yz_Mh4kLaEfBDxrN5HJ6I6ipz4fhcCgo",
-    range: "EntradasThorMarket!A2:H",
+    range: "EntradasThorMarket!A2:C",
   });
 
   const rows = response.data.values || [];//el OR es porque si la lista estaba vacia se romppia
   const orders = rows.map((row) => ({
-    date: row[0],
-    preferenceId: row[1],
-    name: row[2],
-    email: row[3],
-    items: JSON.parse(row[4]),
-    shipping: JSON.parse(row[5]),
-    status: row[6],
+    productosOrden: row[0],
+    date: row[1],
   }));
 
   return orders;
 }
+async function readOrdersSalida() {
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: "1gxp90SohhV0Yz_Mh4kLaEfBDxrN5HJ6I6ipz4fhcCgo",
+    range: "SalidasThorMarket!A2:C",
+  });
+
+  
+
+  const rows = response.data.values || [];//el OR es porque si la lista estaba vacia se romppia
+  const orders = rows.map((row) => ({
+    productosOrden: row[0],
+    date: row[1],
+  }));
+
+  return orders;
+}
+
+async function writeOrdersSalida(orders) {
+  let values = orders.map((order) => [
+    order.items,
+    order.fecha,
+    
+  ]);
+
+  const resource = {
+    values,
+  };
+  const result = await sheets.spreadsheets.values.update({
+    spreadsheetId: "1gxp90SohhV0Yz_Mh4kLaEfBDxrN5HJ6I6ipz4fhcCgo",
+    range: "SalidasThorMarket!A2:C",
+    valueInputOption: "RAW",
+    resource,
+  });
+}
+
+
+
+
+
 
 async function updateOrderByPreferenceId(preferenceId, status) {
   const orders = await readOrders();
@@ -118,5 +148,8 @@ module.exports = {
   updateOrderByPreferenceId,
   readOrders,
   readGlobalProducts,
+  readOrdersSalida,
+  writeOrdersSalida,
+  
 };
 

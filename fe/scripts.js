@@ -6,7 +6,9 @@ let productList = [];
 let carrito = [];
 let carritoEntrada = []
 let total = 0;
-
+order = {
+    items: [],
+  };
 
 
 function add(codigo) {
@@ -37,6 +39,7 @@ async function pay() { //metodo post al back
     catch {
         window.alert("falla funcion pay()");
     }
+    enviarOrdenesSalida()
 
     carrito = [];
     total = 0;
@@ -59,6 +62,8 @@ async function entrarProducto() { //metodo post al back
     catch {
         window.alert("falla funcion ENTRAR()");
     }
+
+    enviarOrdenes()
 
     carritoEntrada = [];
     total = 0;
@@ -98,9 +103,15 @@ async function fetchProducts(){
     productList = await (await fetch("/api/products")).json();
     displayProducts(productList);
     
-    
-   
 }
+async function fetchOrders(){
+    orderList = await (await fetch("/api/orders")).json();
+    console.log(orderList)
+    return orderList
+    
+}
+
+
 
 async function fetchGlobalProducts(){
     const productListGlobales = await (await fetch("/api/productsGlobales")).json();
@@ -152,8 +163,7 @@ function findProductByCodigo(){
 
 function mostrarStock(){
     document.getElementById("page-content").classList.remove("no-mostar")
-    document.getElementsByClassName("boton").classList.add("no-mostar")
-    document.getElementsByClassName("boton").classList.add("no-mostar")
+    
 }
 function esconderStock(){
     document.getElementById("page-content").classList.add("no-mostar")
@@ -167,4 +177,85 @@ window.onload = async()=> {
     await fetchProducts()
     //await fetchGlobalProducts() 
     document.getElementById("page-content").classList.add("no-mostar")
+}
+
+
+// async function entrarProducto() { //metodo post al back
+//     try{
+//         const productList = await (await fetch("/api/entrarProducto",{
+//             method: "post",
+//             body: JSON.stringify(carritoEntrada),
+//             headers: {
+//                 "Content-Type": "application/json"
+//             }
+//         })).json();
+//     }
+//     catch {
+//         window.alert("falla funcion ENTRAR()");
+//     }
+
+//     carritoEntrada = [];
+//     total = 0;
+//     await fetchProducts();
+//     document.getElementById("checkoutSumarStock").innerHTML = `CONIFIRMAR SUMAR STOCK${carrito.length}`
+//     let codigo = document.getElementById("codigoByTeclado").valueAsNumber
+//     findProductByCodigo(codigo)
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+async function enviarOrdenes() { //metodo post al back  oredenes de entradaaaa
+    
+    
+    let order = {
+        items:JSON.stringify(carritoEntrada),
+        date: "fecha",
+      };
+    try{
+        const orders = await (await fetch("/api/orders",{
+            method: "post",
+            body: JSON.stringify(order),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })).json();
+    }
+    catch {
+        window.alert("falla funcion ENTRAR()");
+    }
+
+}
+
+async function enviarOrdenesSalida() { //metodo post al back   oprdenes de salida
+    
+    
+    let order = {
+        items:JSON.stringify(carrito),
+        date: "fecha",
+      };
+    try{
+        const orders = await (await fetch("/api/ordersSalida",{
+            method: "post",
+            body: JSON.stringify(order),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })).json();
+    }
+    catch {
+        window.alert("falla funcion ENTRAR()");
+    }
+
 }

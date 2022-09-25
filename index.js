@@ -35,6 +35,10 @@ app.get("/api/productsGlobales", async (req, res) => {
   res.send(await repository.readGlobalProducts());
 });
 
+app.get("/api/orders", async (req, res) => {
+  res.send(await repository.readOrders());
+
+});
 // app.post("/api/pay", async (req, res) => {
 //   const codigos = req.body;
 //   const procutsCopy = await repository.read();
@@ -48,6 +52,33 @@ app.get("/api/productsGlobales", async (req, res) => {
 //   products = procutsCopy;
 // //   res.send(products);
 // });
+
+app.post("/api/orders",async (req,res)=> {    //ordenes de entrada
+  let order = req.body
+  let orders = await repository.readOrders();
+  order = {
+    items: order.items,
+    fecha: new Date().toISOString(),
+  }
+  orders.push(order)
+  await repository.writeOrders(orders)
+  res.send(orders)
+})
+
+app.post("/api/ordersSalida",async (req,res)=> {    //ordenes de entrada
+  let order = req.body
+  let orders = await repository.readOrdersSalida();
+  order = {
+    items: order.items,
+    fecha: new Date().toISOString(),
+  }
+  orders.push(order)
+  await repository.writeOrdersSalida(orders)
+  res.send(orders)
+})
+
+
+
 
 app.post("/api/pay", async (req, res) => {
     const codigos = req.body;
@@ -90,14 +121,25 @@ app.post("/api/pay", async (req, res) => {
       res.send("error al agregar producto").statusCode(400);
     }
     else {
+      // let order = {
+      //   productsInOrder: [...codigos],
+      //   fecha: new Date().toISOString(),
+      // }
+      // console.log("estae s una orden actual" + order)
+      // const orders= await repository.readOrders()
+      // orders.push(order)
+      // console.log("esta son las ordenes: " +orders)
+      // await repository.writeOrders(orders)
+
       await repository.write(productsCopy);
       res.send(productsCopy);
+      
     }
   });
 
+  
 
-  
-  
+
 
 
 
