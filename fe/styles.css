@@ -113,9 +113,54 @@ input{
     margin: 1rem;
 }
 
-.no-mostar{
+.no-mostrar{
     display: none;
 }
+
+.mostrar-block{
+    display: block;
+}
+.mostrar-flex{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+/* #checkoutSumarStock{
+    display: none;
+}
+
+#checkout{
+    display: none;
+}
+
+#btn-add{
+    display: none;
+}
+
+#btn-addE{
+    display: none;
+} */
+
+
+.salida-stock{
+    background-color: #76bc77ae;
+    height: 70vh;
+    
+}
+
+.entrada-stock{
+    background-color: #2686a680;
+    height: 70vh;
+    
+}
+
+
+
+
+
+
+
+
 
 @media screen and (max-width:500px){
 
@@ -140,4 +185,24 @@ input{
 }
 
     
+}
+
+
+.menu-container{
+    width: 100%;
+    height: 80%;
+}
+
+.menu{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 2rem
+}
+
+.menu div{
+    width: 100%;
+}
+.menu div button{
+    width: 100%;
 }

@@ -16,12 +16,48 @@
 
         
     </div>
-    <div class="entrada-stock" id="entrada-stock">
-        <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="ingrese codigo de barras">
-        <!-- guarda con findproduct -->
-       <button id="btn-buscar-codigo" class="btn-buscar-codigo" onclick="findProductByCodigo(7790580160807)" >Buscar</button> 
-       <div id="producto-encontrado"></div>
+    <div class="menu-container">
+        <div class="menu">
+            
+            <div class="entradas-stock">
+                <button onclick="habilitarEntradas()"> ENTRADA AL STOCK </button>
+                <div class="entrada-stock no-mostrar" id="entrada-stock">
+                    <input type="number" id="codigoByTecladoENTRADA" class="codigoByTecladoENTRADA" placeholder="ingrese codigo de barras">
+                    <!-- guarda con findproduct -->
+                    <button id="btn-buscar-codigo-entrada" class="btn-buscar-codigo" onclick="findProductByCodigoENTRADA() " >Buscar para sumar stock</button> 
+                    <div id="producto-encontrado-entrada"></div>
+                </div>
+            </div>
+            
+            <div class="ventas"> 
+                <button onclick="habilitarSalidas()"> VENTA</button>
+                <div class="salida-stock no-mostrar" id="salida-stock">
+                    <input type="number" id="codigoByTecladoVENTA" class="codigoByTecladoVENTA" placeholder="ingrese codigo de barras">
+                    <!-- guarda con findproduct -->
+                    <button id="btn-buscar-codigo-salida" class="btn-buscar-codigo" onclick="findProductByCodigoVENTA() " >Buscar para vender</button> 
+                    <div id="producto-encontrado-salida"></div>
+                </div>
+
+            </div>
+            <div class="consultas stock"> 
+                <button> CONSULTAS </button>
+            </div>
+            <div class="ingresar nuevo producto">
+                <button> NUEVO PRODUCTO</button>
+            </div>
+
+        </div>
+ 
     </div>
+
+
+    
+    <!-- <div class="entrada-stock" id="entrada-stock">
+        <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="ingrese codigo de barras">
+        
+       <button id="btn-buscar-codigo" class="btn-buscar-codigo" onclick="findProductByCodigo() " >Buscar</button> 
+       <div id="producto-encontrado"></div>
+    </div> -->
     <div>
         <h2>codigos de prueba</h2>
         
@@ -35,5 +71,7 @@
         <button onclick="mostrarStock()" >MOSTRAR STOCK</button>
         <button onclick="esconderStock()" >ESCONDER STOCK</button>
     </div>
-    <div id="page-content" class="page-content">
+    <div id="page-content" class="page-content no-mostrar">
+
+
 </body>
