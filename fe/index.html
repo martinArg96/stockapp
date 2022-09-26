@@ -39,11 +39,26 @@
                 </div>
 
             </div>
-            <div class="consultas stock"> 
+            <div class="consultas-stock"> 
                 <button> CONSULTAS </button>
             </div>
-            <div class="ingresar nuevo producto">
-                <button> NUEVO PRODUCTO</button>
+            <div class="nuevo-producto">
+                <button onclick="mostrarFormularioNuevoProducto()"> NUEVO PRODUCTO</button>
+                <div id="formulario-nuevo-producto"class="ingresar-nuevo-producto no-mostrar">
+                    <!-- <label for="newProductCodigo">codigod de barras</label> -->
+                    <input type="number"  id="newProductCodigo" placeholder="codigo de barras">
+                    <!-- <label for="newProductDescripcion">DESCRIPCION</label> -->
+                    <input type="text" name="" id="newProductDescripcion" placeholder="DESCRIPCION">
+                    <!-- <label for="newProductRubro">RUBRO</label> -->
+                    <input type="number" id="newProductRubro" placeholder="rubro">
+                    <!-- <label for="newProductSubRubro">SUBRUBRO</label> -->
+                    <input type="number" id="newProductSubRubro" placeholder="subrubro">
+                    <!-- <label for="newProductPrecio">PRECIO</label> -->
+                    <input type="number" name="" id="newProductPrecio" placeholder="precio">
+                    <!-- <label for="newProductStock">STOCK</label> -->
+                    <input type="number" id="newProductStock" placeholder="stock">
+                    <button onclick="agregarNuevoProducto()">CONFIRMAR</button>
+                </div>
             </div>
 
         </div>

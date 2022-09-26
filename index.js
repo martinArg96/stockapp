@@ -137,6 +137,21 @@ app.post("/api/pay", async (req, res) => {
     }
   });
 
+  app.post("/api/agregarProductoNuevo", async (req, res) => {
+    const newProduct = req.body;
+    const productsCopy = await repository.read();
+  
+     
+      productsCopy.push(newProduct)
+      await repository.write(productsCopy);
+      res.send(productsCopy);
+      
+    }
+  );
+
+
+
+
   
 
 

@@ -9,6 +9,10 @@ order = {
   items: [],
 };
 
+
+
+
+
 function habilitarEntradas() {
   document.getElementById("entrada-stock").classList.add("mostrar-flex");
   document.getElementById("salida-stock").classList.add("no-mostrar");
@@ -116,6 +120,7 @@ for(i = 0; i< arreglo.length ; i++){
     delete arreglo[i].subrubro
     delete arreglo[i].rubro
     delete arreglo[i].stock
+    
 }
 
 window.confirm(JSON.stringify(arreglo))
@@ -393,4 +398,41 @@ function cancelar() {
   document.getElementById(
     "checkout"
   ).innerHTML = `CONFIRMAR VENTA ${carrito.length}`;
+}
+let newProduct = {  }
+async function agregarNuevoProducto(){
+    newProduct= {
+        codigo: document.getElementById("newProductCodigo").valueAsNumber,
+        descripcion: document.getElementById("newProductDescripcion").value,
+        rubro: document.getElementById("newProductRubro").valueAsNumber,
+        subrubro: document.getElementById("newProductSubRubro").valueAsNumber,
+        precio: document.getElementById("newProductPrecio").valueAsNumber,
+        stock: document.getElementById("newProductStock").valueAsNumber,
+    }
+    
+    try {
+        const nose = await (
+          await fetch("/api/agregarProductoNuevo", {
+            method: "post",
+            body: JSON.stringify(newProduct),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+        ).json();
+        document.getElementById("newProductCodigo").value= null,
+    document.getElementById("newProductDescripcion").value = null,
+    document.getElementById("newProductRubro").value = null,
+    document.getElementById("newProductSubRubro").value= null,
+    document.getElementById("newProductPrecio").value = null,
+    document.getElementById("newProductStock").value = null,
+    document.getElementById("formulario-nuevo-producto").classList.add("no-mostrar")
+        window.alert("producot agregado correctamente")
+      } catch {
+        window.alert("falla funcion Eagregar nuevo producto");
+      }
+}
+
+function mostrarFormularioNuevoProducto(){
+    document.getElementById("formulario-nuevo-producto").classList.remove("no-mostrar")
 }
