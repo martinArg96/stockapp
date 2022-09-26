@@ -431,6 +431,7 @@ async function agregarNuevoProducto(){
       } catch {
         window.alert("falla funcion Eagregar nuevo producto");
       }
+      productList = await (await fetch("/api/products")).json()
 }
 
 function mostrarFormularioNuevoProducto(){
