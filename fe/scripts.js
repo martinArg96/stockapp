@@ -1,5 +1,6 @@
 let findProductByCodigoButton = "";
 let miCarritoSinDuplicados = []
+let arreglo = []
 let productList = [];
 let items = [];
 let carrito = [];
@@ -81,20 +82,16 @@ async function pay() {
 async function entrarProducto() {
   //metodo post al back
 
-//   let itemos = [...items];
-//   let nombresDeProductos = [];
-//   console.log(itemos);
-//   itemos.forEach((element) => {
-//     total += element.precio;
 
-//     nombresDeProductos.push(element.descripcion);
-//   });
-items.forEach(element => {
+
+let elements = items
+
+elements.forEach(element => {
     element.cantidad=1;
 });
 
 
-miCarritoSinDuplicados = items.reduce((acumulador, valorActual) => {
+miCarritoSinDuplicados = elements.reduce((acumulador, valorActual) => {
     const elementoYaExiste = acumulador.find(elemento => elemento.codigo === valorActual.codigo);
     if (elementoYaExiste) {
       return acumulador.map((elemento) => {
@@ -112,9 +109,12 @@ miCarritoSinDuplicados = items.reduce((acumulador, valorActual) => {
     return [...acumulador, valorActual];
   }, []);
   
+ 
+arreglo = miCarritoSinDuplicados
+
+console.log("micarrito sin dupil: " + miCarritoSinDuplicados)
 
 
-let arreglo = miCarritoSinDuplicados
 for(i = 0; i< arreglo.length ; i++){
     delete arreglo[i].codigo
     delete arreglo[i].subrubro
@@ -124,9 +124,22 @@ for(i = 0; i< arreglo.length ; i++){
 }
 
 window.confirm(JSON.stringify(arreglo))
+
+for(i = 0; i< arreglo.length ; i++){
+    delete arreglo[i].codigo
+    delete arreglo[i].subrubro
+    delete arreglo[i].rubro
+    delete arreglo[i].stock
+    delete arreglo[i].precio
+    delete arreglo[i].descripcion
+    delete arreglo[i].cantidad
+    
+}
+items= [];
 arreglo = []
 miCarritoSinDuplicados = []
-
+console.log(arreglo)
+console.log(miCarritoSinDuplicados)
 
 //   for(let i= 0 ; i<= miCarritoSinDuplicados.length ; i++){
 //     console.log(miCarritoSinDuplicados[0].descripcion)
@@ -263,8 +276,13 @@ function displayProductsEncontradosParaEntrada(productoEncontrado) {
             <h3>Stock: ${productoEncontrado.stock}</h3>
        
        
+            <input type="number" name="" id="agregar-varios">
+            <button onclick="agregarVarios(${productoEncontrado.codigo})">AGREGAR VARIOS</button>
+
             <button id="btn-addE" class="button-entrar " onclick="addEntrada(${productoEncontrado.codigo})">ENTRADA</button> 
             </div>
+
+            
 
         <button id="cancelar" class="button-cancelar btn " onclick="cancelar()">Cancelar</button> 
         </div>
@@ -272,6 +290,24 @@ function displayProductsEncontradosParaEntrada(productoEncontrado) {
   document.getElementById("producto-encontrado-entrada").innerHTML =
     productoHTML;
 }
+
+function agregarVarios(codigo){
+    let cant = document.getElementById("agregar-varios").valueAsNumber
+    for(let i = 0; i < cant; i++){
+        carritoEntrada.push(codigo)
+        const producto = productList.find((p) => p.codigo === codigo);
+        items.push(producto);
+    }
+    
+  
+  document.getElementById(
+    "checkoutSumarStock"
+  ).innerHTML = `CONFIRMAR ENTRADA STOCK ${carritoEntrada.length}`;
+
+}
+
+
+
 
 // findProductByCodigoButton.addEventListener('click',findProductByCodigo(7790272001029))
 
@@ -319,27 +355,7 @@ window.onload = async () => {
   document.getElementById("page-content").classList.add("no-mostar");
 };
 
-// async function entrarProducto() { //metodo post al back
-//     try{
-//         const productList = await (await fetch("/api/entrarProducto",{
-//             method: "post",
-//             body: JSON.stringify(carritoEntrada),
-//             headers: {
-//                 "Content-Type": "application/json"
-//             }
-//         })).json();
-//     }
-//     catch {
-//         window.alert("falla funcion ENTRAR()");
-//     }
 
-//     carritoEntrada = [];
-//     total = 0;
-//     await fetchProducts();
-//     document.getElementById("checkoutSumarStock").innerHTML = `CONIFIRMAR SUMAR STOCK${carrito.length}`
-//     let codigo = document.getElementById("codigoByTeclado").valueAsNumber
-//     findProductByCodigo(codigo)
-// }
 
 async function enviarOrdenes() {
   //metodo post al back  oredenes de entradaaaa
@@ -361,6 +377,7 @@ async function enviarOrdenes() {
   } catch {
     window.alert("falla funcion ENTRAR()");
   }
+  items= [];
 }
 
 async function enviarOrdenesSalida() {
@@ -383,12 +400,14 @@ async function enviarOrdenesSalida() {
   } catch {
     window.alert("falla funcion ENTRAR()");
   }
+  items= [];
 }
 
 function cancelar() {
   carrito = [];
   carritoEntrada = [];
   total = 0;
+  items= [];
   order = {
     items: [],
   };
@@ -432,6 +451,7 @@ async function agregarNuevoProducto(){
         window.alert("falla funcion Eagregar nuevo producto");
       }
       productList = await (await fetch("/api/products")).json()
+      items= []
 }
 
 function mostrarFormularioNuevoProducto(){
