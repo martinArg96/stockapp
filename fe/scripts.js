@@ -9,6 +9,7 @@ let total = 0;
 order = {
   items: [],
 };
+let productoParaCambiarPrecio = {}
 
 
 
@@ -65,7 +66,7 @@ async function pay() {
       })
     ).json();
   } catch {
-    window.alert("falla funcion pay()");
+    window.alert("FALLA FUNCION PAY");
   }
   enviarOrdenesSalida();
 
@@ -173,7 +174,7 @@ console.log(miCarritoSinDuplicados)
       })
     ).json();
   } catch {
-    window.alert("falla funcion ENTRARPRoducto()");
+    window.alert("FALLA AL SUMAR STOCK");
   }
 
   enviarOrdenes();
@@ -332,6 +333,10 @@ function findProductByCodigoENTRADA() {
 
   const productoBuscado = productList.find((p) => p.codigo === codigo);
   console.log(productoBuscado);
+  if(!productoBuscado){
+    console.log("no se econtro el prodcut")
+    window.alert("EL PRODUCTO NO SE ENCUENTRA EN EL INVENTARIO. POR FAVOR AGREGAR COMO NUEVO PRODUCTO")
+  }
 
   displayProductsEncontradosParaEntrada(productoBuscado);
 }
@@ -419,6 +424,7 @@ function cancelar() {
   ).innerHTML = `CONFIRMAR VENTA ${carrito.length}`;
 }
 let newProduct = {  }
+
 async function agregarNuevoProducto(){
     newProduct= {
         codigo: document.getElementById("newProductCodigo").valueAsNumber,
@@ -428,7 +434,64 @@ async function agregarNuevoProducto(){
         precio: document.getElementById("newProductPrecio").valueAsNumber,
         stock: document.getElementById("newProductStock").valueAsNumber,
     }
-    
+    //quiero que si ecneuntra el mismocodigo reemplaze el viejo
+
+      let codigoNuevo = newProduct.codigo
+      console.log (codigoNuevo)
+      let productoViejo = productList.find((p) => p.codigo === codigoNuevo)
+
+      console.log("producto viejo" ,productoViejo)
+      
+      
+      if (productoViejo){
+          if(!window.confirm("EL PRODUCTO YA EXISTE. DESEA REEMPLAZARLO?")){
+            window.alert("CANCELADO")
+            return 1
+          } 
+          
+
+            console.log(productList.indexOf(productoViejo))
+            let indexNuevo = productList.indexOf(productoViejo)
+            productList[indexNuevo] = newProduct
+            console.log(productList[indexNuevo])
+  
+            try {
+              const noses = await (
+                await fetch("/api/reemplazarProducto", {
+                  method: "post",
+                  body: JSON.stringify(productList),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                })
+              ).json();
+
+
+              document.getElementById("newProductCodigo").value= null,
+              document.getElementById("newProductDescripcion").value = null,
+              document.getElementById("newProductRubro").value = null,
+              document.getElementById("newProductSubRubro").value= null,
+              document.getElementById("newProductPrecio").value = null,
+              document.getElementById("newProductStock").value = null,
+              document.getElementById("formulario-nuevo-producto").classList.add("no-mostrar")
+
+            window.alert("PRODUCTO REEMPLAZADO CORRECTAMENTE")
+              } catch {
+                window.alert("falla funcion remplazar productor nuevo producto");
+              }
+              productList = await (await fetch("/api/products")).json()
+              items= []
+            }
+
+
+
+
+
+      else{
+
+
+
+
     try {
         const nose = await (
           await fetch("/api/agregarProductoNuevo", {
@@ -439,21 +502,137 @@ async function agregarNuevoProducto(){
             },
           })
         ).json();
-        document.getElementById("newProductCodigo").value= null,
+
+
+    document.getElementById("newProductCodigo").value= null,
     document.getElementById("newProductDescripcion").value = null,
     document.getElementById("newProductRubro").value = null,
     document.getElementById("newProductSubRubro").value= null,
     document.getElementById("newProductPrecio").value = null,
     document.getElementById("newProductStock").value = null,
     document.getElementById("formulario-nuevo-producto").classList.add("no-mostrar")
-        window.alert("producot agregado correctamente")
+    
+    window.alert("PRODUCTO AGREGADO CORRECTAMENTE")
       } catch {
-        window.alert("falla funcion Eagregar nuevo producto");
+        window.alert("FALLA AL AGREGAR NUEVO PRODUCTO");
       }
       productList = await (await fetch("/api/products")).json()
       items= []
-}
+    }
+
+ 
+
+  }
+
 
 function mostrarFormularioNuevoProducto(){
     document.getElementById("formulario-nuevo-producto").classList.remove("no-mostrar")
+}
+
+function mostrarFormularioNuevoPrecio(){
+  document.getElementById("formulario-nuevo-precio").classList.remove("no-mostrar")
+}
+
+
+
+
+
+function findProductByCodigoPRECIO() {
+
+  let codigo = document.getElementById("codigoByTecladoPRECIO").valueAsNumber;
+
+  const productoBuscadoP = productList.find((p) => p.codigo === codigo);
+  console.log(productoBuscadoP);
+  if(!productoBuscadoP){
+    console.log("no se econtro el prodcut")
+    window.alert("EL PRODUCTO NO SE ENCUENTRA EN EL INVENTARIO. POR FAVOR AGREGAR COMO NUEVO PRODUCTO")
+  }
+
+  displayProductsEncontradosParaPrecio(productoBuscadoP);
+}
+
+function displayProductsEncontradosParaPrecio(productoEncontrado){
+console.log("displayProductsEncontradosParaPrecio")
+productoParaCambiarPrecio = productoEncontrado
+console.log('productoParaCambiarPrecio:', productoParaCambiarPrecio)
+
+
+let productoHTMLprecio = `
+        <div class="product-container">
+            <h3 id="codigoDeProductoAcambiarPrecio">Codigo: ${productoEncontrado.codigo}</h3>
+            <h3>${productoEncontrado.descripcion}</h3>
+            <h3>Rubro: ${productoEncontrado.rubro}</h3>
+            <h3>Subrubro: ${productoEncontrado.subrubro}</h3>
+            <h3>Precio: $${productoEncontrado.precio}</h3> 
+            <input type="number" id="precio" placeholder="NUEVO PRECIO">
+
+            <h3>Stock: ${productoEncontrado.stock}</h3>
+        
+       
+        
+
+        <button id="cancelar" class="button-cancelar btn " onclick="cancelar()">Cancelar</button> 
+        </div>
+        `
+        
+        
+        ;
+  document.getElementById("producto-encontrado-para-actualizar-precio").innerHTML =
+    productoHTMLprecio;
+
+    
+
+    document.getElementById("div-boton-confirmar-precio").innerHTML = `
+    <button id="btn-precio" class="btn " onclick="actualizarPrecio()">CONFIRMAR CAMBIO</button> 
+    `
+
+
+  }
+  
+async function actualizarPrecio(){
+ 
+  
+  let nuevoPrecio = document.getElementById("precio").valueAsNumber
+  const productoActualizarPrecio = productList.find((p) => p.codigo === productoParaCambiarPrecio.codigo);
+
+
+  let indexProducto = productList.indexOf( productoActualizarPrecio)
+
+  productList[indexProducto].precio= nuevoPrecio
+            console.log(productList)
+
+
+            try {
+              const noses23 = await (
+                await fetch("/api/reemplazarProducto", {
+                  method: "post",
+                  body: JSON.stringify(productList),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                })
+              ).json();
+             
+               } catch{
+                window.alert("falla del servidor al cambiar precio produto")
+              }
+            
+
+
+
+
+
+
+              productoParaCambiarPrecio = {}
+              await fetchProducts();
+      window.alert("PRECIO ACTUALIZADO CORRECTAMENTE")
+
+
+
+  
+}
+
+
+function mostrarContenedorActualizarPrecio(){
+  document.getElementById("cambiar-precio-container").classList.remove("no-mostrar")
 }

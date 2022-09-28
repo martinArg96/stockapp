@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" />
     <script src="scripts.js"></script>
+    
 </head>
 <body>
     <div class="page-nav">
@@ -12,7 +13,8 @@
         <button id="checkoutSumarStock" class="button-checkoutSUM" onclick="entrarProducto()">SUMAR STOCK</button>
     </div>
    
-       
+    <h1>hola</h1>
+    
 
         
     </div>
@@ -61,6 +63,21 @@
                 </div>
             </div>
 
+
+
+            <div class="actualizar-precio">
+                <button onclick="mostrarContenedorActualizarPrecio()"> ACTUALIZAR PRECIO</button>
+                
+                   <div class="cambiar-precio-container  no-mostrar" id="cambiar-precio-container">
+                    <div class="cambiar-precio" id="cambiar-precio">
+                        <input type="number" id="codigoByTecladoPRECIO" class="codigoByTecladoPRECIO" placeholder="ingrese codigo de barras">
+                        <!-- guarda con findproduct -->
+                        <button id="btn-buscar-codigo-precio" class="btn-buscar-codigo-precio" onclick="findProductByCodigoPRECIO() " >Buscar para cambiar precio</button> 
+                    </div>
+                    <div id="producto-encontrado-para-actualizar-precio"></div>
+                    <div id="div-boton-confirmar-precio"></div>
+                </div> 
+            </div>
         </div>
  
     </div>
@@ -88,6 +105,13 @@
         <button onclick="esconderStock()" >ESCONDER STOCK</button>
     </div>
     <div id="page-content" class="page-content no-mostrar">
-
+    
+   
+    
+    
 
 </body>
+</html>
+
+
+

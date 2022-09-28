@@ -106,7 +106,7 @@ app.post("/api/pay", async (req, res) => {
   app.post("/api/entrarProducto", async (req, res) => {
     const codigos = req.body;
     const productsCopy = await repository.read();
-  
+    
     let error = false;
     codigos.forEach((codigo) => {
       const product = productsCopy.find((p) => p.codigo === codigo);
@@ -145,6 +145,18 @@ app.post("/api/pay", async (req, res) => {
       productsCopy.push(newProduct)
       await repository.write(productsCopy);
       res.send(productsCopy);
+      
+    }
+  );
+
+  app.post("/api/reemplazarProducto", async (req, res) => {
+    const newProductList = req.body;
+    
+  
+     
+      
+      await repository.write(newProductList);
+      res.send(newProductList);
       
     }
   );
