@@ -1,111 +1,40 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THOR-MARKET</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="scripts.js"></script>
-    
 </head>
 <body>
-    <div class="page-nav">
-        <h1>Market Thor</h1>
-        <button id="checkout" class="button-checkout" onclick="pay()">VENTA</button>
-        <button id="checkoutSumarStock" class="button-checkoutSUM" onclick="entrarProducto()">SUMAR STOCK</button>
-    </div>
-    <div class="menu-container">
-        <div class="menu">
-            
-            <div class="entradas-stock">
-                <button onclick="habilitarEntradas()"> ENTRADA AL STOCK </button>
-                <div class="entrada-stock no-mostrar" id="entrada-stock">
-                    <input type="number" id="codigoByTecladoENTRADA" class="codigoByTecladoENTRADA" placeholder="ingrese codigo de barras">
-                    <!-- guarda con findproduct -->
-                    <button id="btn-buscar-codigo-entrada" class="btn-buscar-codigo" onclick="findProductByCodigoENTRADA() " >Buscar para sumar stock</button> 
-                    <div id="producto-encontrado-entrada"></div>
-                </div>
-            </div>
-            
-            <div class="ventas"> 
-                <button onclick="habilitarSalidas()"> VENTA</button>
-                <div class="salida-stock no-mostrar" id="salida-stock">
-                    <input type="number" id="codigoByTecladoVENTA" class="codigoByTecladoVENTA" placeholder="ingrese codigo de barras">
-                    <!-- guarda con findproduct -->
-                    <button id="btn-buscar-codigo-salida" class="btn-buscar-codigo" onclick="findProductByCodigoVENTA() " >Buscar para vender</button> 
-                    <div id="producto-encontrado-salida"></div>
-                </div>
-
-            </div>
-            <div class="consultas-stock"> 
-                <button> CONSULTAS </button>
-            </div>
-            <div class="nuevo-producto">
-                <button onclick="mostrarFormularioNuevoProducto()"> NUEVO PRODUCTO</button>
-                <div id="formulario-nuevo-producto"class="ingresar-nuevo-producto no-mostrar">
-                    <!-- <label for="newProductCodigo">codigod de barras</label> -->
-                    <input type="number"  id="newProductCodigo" placeholder="codigo de barras">
-                    <!-- <label for="newProductDescripcion">DESCRIPCION</label> -->
-                    <input type="text" name="" id="newProductDescripcion" placeholder="DESCRIPCION">
-                    <!-- <label for="newProductRubro">RUBRO</label> -->
-                    <input type="number" id="newProductRubro" placeholder="rubro">
-                    <!-- <label for="newProductSubRubro">SUBRUBRO</label> -->
-                    <input type="number" id="newProductSubRubro" placeholder="subrubro">
-                    <!-- <label for="newProductPrecio">PRECIO</label> -->
-                    <input type="number" name="" id="newProductPrecio" placeholder="precio">
-                    <!-- <label for="newProductStock">STOCK</label> -->
-                    <input type="number" id="newProductStock" placeholder="stock">
-                    <button onclick="agregarNuevoProducto()">CONFIRMAR</button>
-                </div>
-            </div>
-
-
-
-            <div class="actualizar-precio">
-                <button onclick="mostrarContenedorActualizarPrecio()"> ACTUALIZAR PRECIO</button>
-                
-                   <div class="cambiar-precio-container  no-mostrar" id="cambiar-precio-container">
-                    <div class="cambiar-precio" id="cambiar-precio">
-                        <input type="number" id="codigoByTecladoPRECIO" class="codigoByTecladoPRECIO" placeholder="ingrese codigo de barras">
-                        <!-- guarda con findproduct -->
-                        <button id="btn-buscar-codigo-precio" class="btn-buscar-codigo-precio" onclick="findProductByCodigoPRECIO() " >Buscar para cambiar precio</button> 
-                    </div>
-                    <div id="producto-encontrado-para-actualizar-precio"></div>
-                    <div id="div-boton-confirmar-precio"></div>
-                </div> 
-            </div>
+    <header>
+        <div class="container">
+            <h1> MARKET THOR </h1>
         </div>
- 
-    </div>
+    </header>
+    <main>
+        <section class="menu">
+            <div class="menu-container">
+                <div class="menu-venta" id="menu-venta"><h2>VENTA</h2></div>
+                <div class="menu-compra" id="menu-compra"><h2>COMPRA</h2></div>
+                <div class="menu-nuevoProd" id="menu-nuevoProd"><h2>NUEVO PRODUCTO</h2></div>
+                <div class="menu-stock" id="menu-stock"><h2>VER STOCK</h2></div>
+                <div class="menu-precios" id="menu-precios"><h2>MODIFICAR PRECIOS</h2> </div>
+                <div class="menu-consultas" id="menu-consultas"><h2>CONSULTAS</h2></div>
+            </div>
+        </section>
+        <section class="ventana1" id="ventana1"></section>
+        <section class="ventana2" id="ventana2"></section>
 
-   
 
-    
-    <!-- <div class="entrada-stock" id="entrada-stock">
-        <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="ingrese codigo de barras">
-        
-       <button id="btn-buscar-codigo" class="btn-buscar-codigo" onclick="findProductByCodigo() " >Buscar</button> 
-       <div id="producto-encontrado"></div>
-    </div> -->
-    <div>
-        <h2>codigos de prueba</h2>
-        
-        <ul>
-            <li>7622210791023</li>
-            <li>7891167011748</li>
-            <li>7622300840259</li>
-        </ul>
-    </div>
-    <div>
-        <button onclick="mostrarStock()" >MOSTRAR STOCK</button>
-        <button onclick="esconderStock()" >ESCONDER STOCK</button>
-    </div>
-    <div id="page-content" class="page-content no-mostrar">
-    
-   
-    
-    
+    </main>
+    <footer>
+        <div class="container">
+            <h3>FOOTER</h3>
+        </div>
+    </footer>
 
 </body>
 </html>
-
-
-
