@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,26 +7,56 @@
     <title>THOR-MARKET</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="scripts.js"></script>
+    <!-- <script src="buscador.js"></script> -->
+    
+    
 </head>
 <body>
-    <header>
+    
+    <header class="header">
         <div class="container">
             <h1> MARKET THOR </h1>
         </div>
     </header>
+
+    
     <main>
         <section class="menu">
             <div class="menu-container">
-                <div class="menu-venta" id="menu-venta"><h2>VENTA</h2></div>
-                <div class="menu-compra" id="menu-compra"><h2>COMPRA</h2></div>
-                <div class="menu-nuevoProd" id="menu-nuevoProd"><h2>NUEVO PRODUCTO</h2></div>
-                <div class="menu-stock" id="menu-stock"><h2>VER STOCK</h2></div>
-                <div class="menu-precios" id="menu-precios"><h2>MODIFICAR PRECIOS</h2> </div>
-                <div class="menu-consultas" id="menu-consultas"><h2>CONSULTAS</h2></div>
+                <div class="menu-venta" id="menu-venta" 
+                onclick="mostrarVentana('ventana1','menu-venta')"><h2>VENTA</h2></div>
+
+                <div class="menu-ingreso" id="menu-ingreso" 
+                onclick="mostrarVentana('ventana1','menu-ingreso')"><h2>INGRESO</h2></div>
+
+                <div class="menu-nuevoProducto" id="menu-nuevoProducto" 
+                onclick="mostrarVentana('ventana1','menu-nuevoProducto')"><h2>NUEVO PRODUCTO</h2></div>
+
+                <div class="menu-stock" id="menu-stock" 
+                onclick="mostrarVentana('ventana1','menu-stock')"><h2>VER STOCK</h2></div>
+
+                <div class="menu-precios" id="menu-precios" 
+                onclick="mostrarVentana('ventana1','menu-precios')"><h2>MODIFICAR PRECIOS</h2> </div>
+
+                <div class="menu-consultas" id="menu-consultas"
+                onclick="mostrarVentana('ventana1','menu-consultas')"><h2>CONSULTAS</h2></div>
             </div>
         </section>
-        <section class="ventana1" id="ventana1"></section>
-        <section class="ventana2" id="ventana2"></section>
+        
+        <section class="ventana1" id="ventana1">
+            <div class="container1" id="container1">
+                
+            </div>
+
+        </section>
+        <section class="ventana2" id="ventana2">
+            <div class="container2" id="container2">
+                
+            </div>
+        </section>
+
+        
+        
 
 
     </main>
@@ -35,6 +65,7 @@
             <h3>FOOTER</h3>
         </div>
     </footer>
-
+    
 </body>
 </html>
+
