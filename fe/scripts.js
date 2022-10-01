@@ -70,7 +70,7 @@ async function mostrarVentana(ventanaId,opcionMenu){
         <button> CANCELAR </button>
         <h3>PRODUCTOS ENCONTRADOS</h3>
         <div id="productos-seleccionados"> </div>
-        
+        <input type="number" id="cambiar-precio-input" placeholder="NUEVO PRECIO">
     </div>
 
 
@@ -214,25 +214,52 @@ function crearNuevoProducto(){
 }
 
 function mostrarProductosSeleccionados(){
+    if(productosSeleccionados[0]){
     let productosSeleccionadosHTML =""
+    let idDinamico = 1
     productosSeleccionados.forEach(element => {
         productosSeleccionadosHTML += `<div class="product-container">
-        <h3>${element.codigo}</h3>
-        <h3>${element.descripcion}</h3>
-        <h3>Rubro: ${element.rubro}</h3>
-        <h3>Subrubro: ${element.subrubro}</h3>
-        <h3>precio: $${element.precio}</h3>
-        <h3>stock: ${element.stock}</h3>
+        <span class="product-property">${element.codigo}</span>
+        <span class="product-property">${element.descripcion}</span>
+        <span class="product-property">Rubro: ${element.rubro}</span>
+        <span class="product-property">Subrubro: ${element.subrubro}</span>
+        <span class="product-property">precio: $${element.precio}</span>
         
+        <button onclick="cambiarPrecio(${element.codigo})" >cambiar precio</button>
+        <span class="product-property">stock: ${element.stock}</span>
         
-        
+        <div> 
+        <button> +1 </button>
         </div>
+        
+        <div>
+            <input id="agregar-varios-input" type="number" placeholder="por cantidad">
+            <button onclick="agregarVarios()">Agregar varios</button>
+        </div>
+        
+        
+    </div>
     `
+    idDinamico++
     document.getElementById("productos-seleccionados").innerHTML = productosSeleccionadosHTML;
     });
+
+    
 }
+}
+function cambiarPrecio(codigo){
+        let nuevoPrecio = document.getElementById("cambiar-precio-input").valueAsNumber
+        let productoBuscadoPrecio = productosSeleccionados.find((p) => p.codigo === codigo);
+        
+        // console.log(productList.indexOf(productoViejo))
+        let indexNuevoPrecio = productosSeleccionados.indexOf(productoBuscadoPrecio)
+        productosSeleccionados[indexNuevoPrecio].precio = nuevoPrecio
+        console.log(productosSeleccionados[indexNuevoPrecio])
+        document.getElementById("cambiar-precio-input").value= ""
+        mostrarProductosSeleccionados()
 
-
+    
+}
 
 
 function confirmarSeleccion(tipoOrden){
@@ -248,6 +275,7 @@ function confirmarSeleccion(tipoOrden){
     console.log('carritoNuevosProductos:', carritoNuevosProductos)
     mostrarVentana2(tipoOrden)
     }
+    
 }
 
 
@@ -297,10 +325,17 @@ async function fetchProducts() {
 function findProductByCodigo() {
     let codigo = document.getElementById("codigoByTeclado").valueAsNumber;
     if(codigo){
+        
+
         let productoBuscado = productList.find((p) => p.codigo === codigo);
+        if(productoBuscado){
         productosSeleccionados.push(productoBuscado)
         productoBuscado = null
         mostrarProductosSeleccionados()
+    } else{
+        window.alert("NO SE ENCONTRO EL PRODUCTO")
+    }
+    
     }
     document.getElementById("codigoByTeclado").value=""
     console.log("no se ingreso codigo de barras")
