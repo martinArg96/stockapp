@@ -56,12 +56,12 @@ async function mostrarVentana(ventanaId,opcionMenu){
         
         <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="CODIGO DE BARRAS">
         
-        <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >Buscar para sumar stock</button>
+        <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >BUSCAR POR CODIGO</button>
         
-        <div>
-            <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar...">
+        <div class="buscador-por-palabras-div">
+            <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="nope">
     
-            <ul id="listaArticulos">
+            <ul id="listaArticulos" class="listaArticulos">
                 <!-- aca se insertan articulos buscados por palabra -->
             </ul>
 
@@ -296,12 +296,14 @@ async function fetchProducts() {
 
 function findProductByCodigo() {
     let codigo = document.getElementById("codigoByTeclado").valueAsNumber;
-
-    let productoBuscado = productList.find((p) => p.codigo === codigo);
-    productosSeleccionados.push(productoBuscado)
-    productoBuscado = null
-    mostrarProductosSeleccionados()
-
+    if(codigo){
+        let productoBuscado = productList.find((p) => p.codigo === codigo);
+        productosSeleccionados.push(productoBuscado)
+        productoBuscado = null
+        mostrarProductosSeleccionados()
+    }
+    document.getElementById("codigoByTeclado").value=""
+    console.log("no se ingreso codigo de barras")
 
  }
 
