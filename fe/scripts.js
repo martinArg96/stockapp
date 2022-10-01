@@ -1,17 +1,17 @@
 let productList = []
 
-const carritoVenta = []
-const carritoIngreso = []
+let carritoVenta = []
+let carritoIngreso = []
 
-const carritoModificaciones = []
+let carritoModificaciones = []
 let carritoNuevosProductos = []
 
 let productosSeleccionados = []
 
-const ordenVenta = []
-const ordenIngreso = []
+let ordenVenta = []
+let ordenIngreso = []
 
-
+let cantidadASumar = 0
 
 
 
@@ -70,10 +70,11 @@ async function mostrarVentana(ventanaId,opcionMenu){
         <button> CANCELAR </button>
         <h3>PRODUCTOS ENCONTRADOS</h3>
         <div id="productos-seleccionados"> </div>
-        <input type="number" id="cambiar-precio-input" placeholder="NUEVO PRECIO">
+        <input type="number" id="cambiar-precio-input" placeholder=" INGRESE NUEVO PRECIO">
+        <input id="agregar-varios-input" type="number" placeholder="INGRESE CANTIDAD">
     </div>
 
-
+        <button id="orden-ingreso" onclick="confirmarSeleccion('orden-ingreso')">CONFIRMAR SELECCION INGRESO</button>
         <button class="cerrar-ventana1" id="cerrar-ventana1" onclick="cerrarVentana('ventana1')">CERRAR</button>
     `
     activarBuscadorPorPalabras()
@@ -158,6 +159,18 @@ function mostrarVentana2(tipoOperacionId){
         mostrarCarritoNuevosProductos()
 
     }
+    if(tipoOperacionId == "orden-ingreso"){
+        console.log("entrando al if de ventana2 orden ingreso")
+        document.getElementById("container2").innerHTML= `
+                <h2>Orden de ingreso</h2>
+                <div id="carrito-ingreso"></div>
+                <h2>total</h2>
+                <button onclick="confirmarIngreso()"> ACTUALIZAR STOCK</button>
+                <button onclick="cerrarVentanas()">SALIR AL MENU</button>
+        `
+        mostrarCarritoIngreso()
+
+    }
 
 }
 
@@ -182,9 +195,30 @@ function mostrarCarritoNuevosProductos(){
 
 });
 
-document.getElementById("carrito-nuevosProductos").innerHTML = carritoNuevosProductosHTML;
+    document.getElementById("carrito-nuevosProductos").innerHTML = carritoNuevosProductosHTML;
 
 }
+
+function mostrarCarritoIngreso(){
+    console.log("ejecutando mostrarCarritoNuevosingreso()")
+    let carritoNuevosProductosHTML = ""
+    console.log(carritoNuevosProductos)  
+    carritoIngreso.forEach(element => {
+    carritoNuevosProductosHTML += `<div class="product-container">
+    <h3>${element.codigo}</h3>
+    <h3>${element.descripcion}</h3>
+    <h3>Rubro: ${element.rubro}</h3>
+    <h3>Subrubro: ${element.subrubro}</h3>
+    <h3>precio: $${element.precio}</h3>
+    <h3>stock: ${element.stock}</h3>
+    <h3>cantidad: ${element.cantidad}</h3>
+    </div>
+`
+
+    });
+    document.getElementById("carrito-ingreso").innerHTML = carritoNuevosProductosHTML
+}
+
 
 //CREA NUEVO PRODUCTO Y LO INGRESA A ARRAY DE PRODUCTOS SELECCIONADOS
 function crearNuevoProducto(){
@@ -224,23 +258,28 @@ function mostrarProductosSeleccionados(){
         <span class="product-property">Rubro: ${element.rubro}</span>
         <span class="product-property">Subrubro: ${element.subrubro}</span>
         <span class="product-property">precio: $${element.precio}</span>
+        <span class="product-property">cantidad: ${element.cantidad}</span>
         
         <button onclick="cambiarPrecio(${element.codigo})" >cambiar precio</button>
         <span class="product-property">stock: ${element.stock}</span>
         
         <div> 
-        <button> +1 </button>
+        <button onclick="agregarUno(${element.codigo})"> +1 </button>
         </div>
         
+        
+        
         <div>
-            <input id="agregar-varios-input" type="number" placeholder="por cantidad">
-            <button onclick="agregarVarios()">Agregar varios</button>
+
+
+           
+            <button onclick="agregarVarios(${element.codigo})">Agregar varios</button>
         </div>
         
         
     </div>
     `
-    idDinamico++
+    
     document.getElementById("productos-seleccionados").innerHTML = productosSeleccionadosHTML;
     });
 
@@ -261,6 +300,40 @@ function cambiarPrecio(codigo){
     
 }
 
+function agregarUno(codigo){
+    let productoBuscadoAgregar = productosSeleccionados.find((p) => p.codigo === codigo);
+
+    
+        
+        // console.log(productList.indexOf(productoViejo))
+        let index = productosSeleccionados.indexOf(productoBuscadoAgregar)
+        productosSeleccionados[index].cantidad++
+        console.log(productosSeleccionados[index])
+        
+        mostrarProductosSeleccionados()
+    
+}
+function agregarVarios(codigo){
+        console.log("agregar-varios")
+        cantidadASumar = document.getElementById("agregar-varios-input").valueAsNumber
+        let productoBuscadoAgregarVarios = productosSeleccionados.find((p) => p.codigo === codigo);
+        console.log(productoBuscadoAgregarVarios)
+        
+        
+            
+            // console.log(productList.indexOf(productoViejo))
+            let indexVarios = productosSeleccionados.indexOf(productoBuscadoAgregarVarios)
+            console.log(indexVarios)
+            productosSeleccionados[indexVarios].cantidad+= cantidadASumar
+            cantidadASumar = 0
+            document.getElementById("agregar-varios-input").value= ""
+            console.log(productosSeleccionados[indexVarios])
+            
+            mostrarProductosSeleccionados()
+        
+   
+}
+
 
 function confirmarSeleccion(tipoOrden){
     
@@ -275,6 +348,21 @@ function confirmarSeleccion(tipoOrden){
     console.log('carritoNuevosProductos:', carritoNuevosProductos)
     mostrarVentana2(tipoOrden)
     }
+
+     
+    if(tipoOrden == "orden-ingreso"){
+
+        console.log("confirmar seleccion orden ingreso")
+        
+        productosSeleccionados.forEach(element => {
+            carritoIngreso.push(element)
+        });
+        productosSeleccionados = []
+        console.log('carritoIngreso:', carritoIngreso)
+        mostrarVentana2(tipoOrden)
+        }
+
+    
     
 }
 
@@ -293,6 +381,14 @@ async function fetchProducts() {
         productList.push(element)
     });
     carritoNuevosProductos = []
+
+
+    // try{
+    //             //quiero que mande la orden de  nuevos productos
+    // }
+    // catch{
+
+    // }
 
     //metodo post al back
     try {
@@ -316,10 +412,45 @@ async function fetchProducts() {
     carritoNuevosProductos = []
 
     productosSeleccionados = []
-    window.alert("PRODUCTOS AGREGADOS CORRECTAMENTE")
+    window.alert("NUEVOS PRODUCTOS AGREGADOS CORRECTAMENTE")
     cerrarVentanas()
 
   }
+
+
+async function confirmarIngreso(){
+    fetchProducts()
+    carritoIngreso.forEach(element => {
+        let productoBuscado = productList.find((p) => p.codigo === element.codigo);
+        let index = productList.indexOf(productoBuscado)
+        productList[index].precio = element.precio
+        productList[index].stock = element.stock + element.cantidad
+    });
+
+    try {
+        const ALGO = await (
+          await fetch("/api/actualizarProductos", {
+            method: "post",
+            body: JSON.stringify(productList),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+        ).json();
+      } catch {
+        window.alert("FALLA AL AGREGAR MERCADERIA");
+      }
+      ;
+    
+      await fetchProducts();
+      
+  
+      carritoIngreso = []
+  
+      productosSeleccionados = []
+      window.alert("PRODUCTOS AGREGADOS CORRECTAMENTE")
+      cerrarVentanas()
+}
 
 
 function findProductByCodigo() {
@@ -329,6 +460,7 @@ function findProductByCodigo() {
 
         let productoBuscado = productList.find((p) => p.codigo === codigo);
         if(productoBuscado){
+        productoBuscado.cantidad = 1
         productosSeleccionados.push(productoBuscado)
         productoBuscado = null
         mostrarProductosSeleccionados()
@@ -356,9 +488,9 @@ function findProductByCodigo() {
 let nombresDesplegados = false
 
 document.addEventListener("keyup", e=>{
-
+    
     if (e.target.matches("#buscador-por-palabras")){
-        
+       
         if (e.key ==="Escape")e.target.value = ""
         console.log(e.target.value)
         document.querySelectorAll(".articulo-nombre").forEach(articulo =>{
@@ -417,8 +549,13 @@ nombresDesplegados= true
 
 function agregarProductoSeleccionadoPorNombre(codigo){
     let productoBuscadoPorNombre = productList.find((p) => p.codigo === codigo);
+    productoBuscadoPorNombre.cantidad = 1
     productosSeleccionados.push(productoBuscadoPorNombre)
     productoBuscadoPorNombre = ""
+    document.querySelectorAll(".articulo-nombre").forEach(articulo =>{
+  
+        articulo.classList.add("filtro")
+    })
     mostrarProductosSeleccionados()
 
 }
