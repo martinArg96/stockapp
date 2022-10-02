@@ -20,8 +20,32 @@ app.post("/api/actualizarProductos", async (req, res) => {
     await repository.write(productos);
     const productsCopy = await repository.read();
     res.send(productsCopy);
-    
+
   });
+  app.post("/api/venta", async (req, res) => {
+   
+   try{
+    const carritoVenta = req.body;
+    // 
+    let productsCopy =  await repository.read();
+    carritoVenta.forEach((element) => {
+        let productoBuscado = productsCopy.find((p) => p.codigo === element.codigo);
+        let index = productsCopy.indexOf(productoBuscado);
+        productsCopy[index].precio = element.precio;
+        productsCopy[index].stock = element.stock - element.cantidad;
+      });
+
+    await repository.write(productsCopy);
+    productsCopy = await repository.read();
+    res.send(productsCopy);
+   }
+   catch{
+        window.alert("FALLO EN LA VENTA")
+   }
+   
+
+  });
+
 
 
 
