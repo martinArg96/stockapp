@@ -29,7 +29,7 @@ async function mostrarVentana(ventanaId, opcionMenu) {
     <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >BUSCAR POR CODIGO</button>
     
     <div class="buscador-por-palabras-div">
-        <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="off">
+        <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="off" onfocusout="ocultarArticulosPorPalabras()">
 
         <ul id="listaArticulos" class="listaArticulos">
             <!-- aca se insertan articulos buscados por palabra -->
@@ -60,7 +60,7 @@ async function mostrarVentana(ventanaId, opcionMenu) {
         <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >BUSCAR POR CODIGO</button>
         
         <div class="buscador-por-palabras-div">
-            <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="off">
+            <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="off" onfocusout="ocultarArticulosPorPalabras()">
     
             <ul id="listaArticulos" class="listaArticulos">
                 <!-- aca se insertan articulos buscados por palabra -->
@@ -537,6 +537,11 @@ function agregarProductoSeleccionadoPorNombre(codigo) {
     articulo.classList.add("filtro");
   });
   mostrarProductosSeleccionados();
+}
+function ocultarArticulosPorPalabras(){
+document.querySelectorAll(".articulo-nombre").forEach((articulo) => {
+    articulo.classList.add("filtro");
+  });
 }
 
 //termina buscador por palabras
