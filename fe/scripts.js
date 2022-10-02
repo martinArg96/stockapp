@@ -29,7 +29,7 @@ async function mostrarVentana(ventanaId, opcionMenu) {
     <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >BUSCAR POR CODIGO</button>
     
     <div class="buscador-por-palabras-div">
-        <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="nope">
+        <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="off">
 
         <ul id="listaArticulos" class="listaArticulos">
             <!-- aca se insertan articulos buscados por palabra -->
@@ -60,7 +60,7 @@ async function mostrarVentana(ventanaId, opcionMenu) {
         <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >BUSCAR POR CODIGO</button>
         
         <div class="buscador-por-palabras-div">
-            <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="nope">
+            <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="off">
     
             <ul id="listaArticulos" class="listaArticulos">
                 <!-- aca se insertan articulos buscados por palabra -->
@@ -237,6 +237,7 @@ function crearNuevoProducto() {
 
 function mostrarProductosSeleccionados() {
   if (productosSeleccionados[0]) {
+    
     let productosSeleccionadosHTML = "";
     let idDinamico = 1;
     productosSeleccionados.forEach((element) => {
@@ -448,6 +449,7 @@ function findProductByCodigo() {
   let codigo = document.getElementById("codigoByTeclado").valueAsNumber;
   let inputBarras = document.getElementById("codigoByTeclado")
   if (codigo) {
+    let productoRepetido = productosSeleccionados.find((p) => p.codigo === codigo)
     let productoBuscado = productList.find((p) => p.codigo === codigo);
     if (productoBuscado) {
       productoBuscado.cantidad = 1;
