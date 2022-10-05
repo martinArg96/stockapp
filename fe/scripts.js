@@ -1,3 +1,5 @@
+let inputCodigo = ""
+
 let productList = [];
 
 let carritoVenta = [];
@@ -50,7 +52,14 @@ async function mostrarVentana(ventanaId, opcionMenu) {
         
         `
         activarBuscadorPorPalabras();
-        
+        inputCodigo = document.getElementById("codigoByTeclado");
+        inputCodigo.addEventListener("keyup", function(event) {
+          if (event.key === 'Enter') {
+           event.preventDefault();
+          //  document.getElementById("myBtn").click();
+          findProductByCodigo()
+          }
+        });
   } else if (opcionMenu == "menu-ingreso") {
     document.getElementById("container1").innerHTML = `
     <div class="ventana-ingreso" id="ventana-ingreso">
@@ -444,6 +453,9 @@ async function confirmarIngreso() {
   window.alert("PRODUCTOS AGREGADOS CORRECTAMENTE");
   cerrarVentanas();
 }
+
+  
+ 
 
 function findProductByCodigo() {
   let codigo = document.getElementById("codigoByTeclado").valueAsNumber;
