@@ -25,7 +25,7 @@ async function mostrarVentana(ventanaId, opcionMenu) {
     document.getElementById("container1").innerHTML = `
     <div class="ventana-venta" id="ventana-venta">
     <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="CODIGO DE BARRAS">
-        
+    
     <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >BUSCAR POR CODIGO</button>
     
     <div class="buscador-por-palabras-div">
@@ -450,6 +450,7 @@ function findProductByCodigo() {
   let inputBarras = document.getElementById("codigoByTeclado")
   if (codigo) {
     let productoRepetido = productosSeleccionados.find((p) => p.codigo === codigo)
+    if (!productoRepetido){
     let productoBuscado = productList.find((p) => p.codigo === codigo);
     if (productoBuscado) {
       productoBuscado.cantidad = 1;
@@ -460,9 +461,13 @@ function findProductByCodigo() {
     } else {
       window.alert("NO SE ENCONTRO EL PRODUCTO");
     }
-  }
+  }else {
+    console.log("el producto ya se encuentra seleccionado")
+    window.alert("producto ya esta seleccionado")
+    }
   document.getElementById("codigoByTeclado").value = "";
   console.log("no se ingreso codigo de barras");
+} 
 }
 
 window.onload = async () => {
@@ -530,6 +535,10 @@ function mostrarNombresDeProductList() {
 
 function agregarProductoSeleccionadoPorNombre(codigo) {
   let productoBuscadoPorNombre = productList.find((p) => p.codigo === codigo);
+  let productoRepetido = productosSeleccionados.find((p) => p.codigo === codigo)
+  if(productoRepetido){
+    console.log("ya existe en seleccionados")
+  }else{
   productoBuscadoPorNombre.cantidad = 1;
   productosSeleccionados.push(productoBuscadoPorNombre);
   productoBuscadoPorNombre = "";
@@ -538,10 +547,11 @@ function agregarProductoSeleccionadoPorNombre(codigo) {
   });
   mostrarProductosSeleccionados();
 }
+}
 function ocultarArticulosPorPalabras(){
-document.querySelectorAll(".articulo-nombre").forEach((articulo) => {
-    articulo.classList.add("filtro");
-  });
+// document.querySelectorAll(".articulo-nombre").forEach((articulo) => {
+//     articulo.classList.add("filtro");
+//   });
 }
 
 //termina buscador por palabras

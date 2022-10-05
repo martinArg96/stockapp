@@ -211,7 +211,7 @@ function displayProducts(productList) {
 
 async function fetchProducts() {
   productList = await (await fetch("/api/products")).json();
-  displayProducts(productList);
+  // displayProducts(productList);
 }
 async function fetchOrders() {
   orderList = await (await fetch("/api/orders")).json();
