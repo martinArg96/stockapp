@@ -51,6 +51,8 @@ async function mostrarVentana(ventanaId, opcionMenu) {
         
         
         `
+        inputBarras = document.getElementById("codigoByTeclado")
+        inputBarras.focus()
         activarBuscadorPorPalabras();
         inputCodigo = document.getElementById("codigoByTeclado");
         inputCodigo.addEventListener("keyup", function(event) {
@@ -229,6 +231,10 @@ function crearNuevoProducto() {
     stock: document.getElementById("newProductStock").valueAsNumber,
   };
   //se ingresa a productos seleccionados
+
+
+  let productoRepetido = productList.find((p) => p.codigo === newProduct.codigo)
+ if(!productoRepetido){
   productosSeleccionados.push(newProduct);
   console.log("productosSeleccionados:", productosSeleccionados);
 
@@ -242,6 +248,10 @@ function crearNuevoProducto() {
 
   //mustra productos seleccionados
   mostrarProductosSeleccionados();
+ } else{
+   window.alert("Ya existe un producto con ese codigo de barras")
+   newProduct = {}
+ }
 }
 
 function mostrarProductosSeleccionados() {
@@ -337,8 +347,9 @@ function agregarVarios(codigo) {
 
 function confirmarSeleccion(tipoOrden) {
   if (tipoOrden == "orden-agregar-nuevosProductos") {
+    
     console.log("confirmar seleccion orden nuevos productos");
-
+    
     productosSeleccionados.forEach((element) => {
       carritoNuevosProductos.push(element);
     });
@@ -459,7 +470,7 @@ async function confirmarIngreso() {
 
 function findProductByCodigo() {
   let codigo = document.getElementById("codigoByTeclado").valueAsNumber;
-  let inputBarras = document.getElementById("codigoByTeclado")
+  inputBarras = document.getElementById("codigoByTeclado")
   if (codigo) {
     let productoRepetido = productosSeleccionados.find((p) => p.codigo === codigo)
     if (!productoRepetido){

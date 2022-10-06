@@ -104,20 +104,23 @@ async function readOrdersSalida() {
 
   const rows = response.data.values || [];//el OR es porque si la lista estaba vacia se romppia
   const orders = rows.map((row) => ({
-    productosOrden: row[0],
-    date: row[1],
+    items: row[0],
+    totalPrecioVenta: row[1],
+    fecha: row[2],
+    
   }));
 
   return orders;
 }
 
 async function writeOrdersSalida(orders) {
-  let values = orders.map((order) => [
-    order.items,
+  let values = orders.map((order) => 
+  [order.items,
+    order.totalPrecioVenta,
     order.fecha,
-    
-  ]);
-
+  ]
+    );
+console.log("repository orders", orders)
   const resource = {
     values,
   };
@@ -128,11 +131,6 @@ async function writeOrdersSalida(orders) {
     resource,
   });
 }
-
-
-
-
-
 
 async function updateOrderByPreferenceId(preferenceId, status) {
   const orders = await readOrders();
