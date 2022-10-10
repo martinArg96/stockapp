@@ -65,7 +65,9 @@ async function write(products) {
 async function writeOrders(orders) {
   let values = orders.map((order) => [
     order.items,
-    order.fecha,
+    order.date,
+    order.cantidad,
+    order.precioTotalVenta,
     
   ]);
 
@@ -74,7 +76,7 @@ async function writeOrders(orders) {
   };
   const result = await sheets.spreadsheets.values.update({
     spreadsheetId: "1gxp90SohhV0Yz_Mh4kLaEfBDxrN5HJ6I6ipz4fhcCgo",
-    range: "EntradasThorMarket!A2:C",
+    range: "EntradasThorMarket!A2:D",
     valueInputOption: "RAW",
     resource,
   });
@@ -83,13 +85,16 @@ async function writeOrders(orders) {
 async function readOrders() {
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: "1gxp90SohhV0Yz_Mh4kLaEfBDxrN5HJ6I6ipz4fhcCgo",
-    range: "EntradasThorMarket!A2:C",
+    range: "EntradasThorMarket!A2:D",
   });
 
   const rows = response.data.values || [];//el OR es porque si la lista estaba vacia se romppia
   const orders = rows.map((row) => ({
-    productosOrden: row[0],
+    items: row[0],
     date: row[1],
+    cantidad: row[2],
+    precioTotalVenta: row[3]
+
   }));
 
   return orders;

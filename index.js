@@ -12,10 +12,86 @@ app.get("/api/products", async (req, res) => {
   res.send(await repository.read());
 });
 
-app.post("/api/actualizarProductos", async (req, res) => {
-  const productos = req.body;
-  //
+app.post("/api/entradaProductosOrden", async (req, res) => {
+  
+  const carritoEntradaComun = req.body;
+  console.log('carritoEntrada:', carritoEntradaComun)
+  
+  // ORDEN DE ENTRADA
+  
+  let orderEntrada = {
+    items: ["prueba entrada comun"],
+    date  : 0,
+    cantidad: 0,
+    precioTotalVenta: 0
+  } 
 
+  orderEntrada.items = JSON.stringify(carritoEntradaComun)
+  orderEntrada.date = orderEntrada.date = new Date().toISOString()
+  carritoEntradaComun.forEach((element) => {
+    orderEntrada.precioTotalVenta += element.precio * element.cantidad
+
+  }
+    );
+  let orders = await repository.readOrders();
+  console.log('orders:', orders)
+
+  orders.push(orderEntrada)
+  
+  console.log('orders mas la nueva:', orders)
+  
+  
+  await repository.writeOrders(orders)
+
+  
+  
+  res.send(orders);
+});
+
+
+app.post("/api/enviarOrdenDeEntrada", async (req, res) => {
+  
+  const carritoEntrada = req.body;
+  console.log('carritoEntrada:', carritoEntrada)
+  
+  // ORDEN DE ENTRADA
+  
+  let orderEntrada = {
+    items: ["prueba"],
+    date  : 0,
+    cantidad: 0,
+    precioTotalVenta: 0
+  } 
+
+  orderEntrada.items = JSON.stringify(carritoEntrada)
+  orderEntrada.date = orderEntrada.date = new Date().toISOString()
+  carritoEntrada.forEach((element) => {
+    orderEntrada.precioTotalVenta += element.precio * element.stock
+
+  }
+    );
+  let orders = await repository.readOrders();
+  console.log('orders:', orders)
+
+  orders.push(orderEntrada)
+  
+  console.log('orders mas la nueva:', orders)
+  
+  
+  await repository.writeOrders(orders)
+
+  
+  
+  res.send(orders);
+});
+
+
+
+
+app.post("/api/actualizarProductos", async (req, res) => {
+  
+  const productos = req.body;
+ 
   await repository.write(productos);
   const productsCopy = await repository.read();
   res.send(productsCopy);
@@ -44,7 +120,7 @@ app.post("/api/venta", async (req, res) => {
       orderVenta.items.push(element);
       console.log("orderVenta:", orderVenta);
     });
-   
+
 
     carritoVenta.forEach((element) => {
       let productoBuscado = productsCopy.find(

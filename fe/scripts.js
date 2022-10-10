@@ -122,6 +122,9 @@ async function mostrarVentana(ventanaId, opcionMenu) {
     
             <button class="cerrar-ventana1" id="cerrar-ventana1" onclick="cerrarVentana('ventana1')">CERRAR</button>
         `;
+  }else if (opcionMenu == "menu-stock"){
+    displayProducts()
+    
   }
 }
 
@@ -161,6 +164,7 @@ function mostrarVentana2(tipoOperacionId) {
                 <div id="carrito-nuevosProductos"></div>
                 <h2>total</h2>
                 <button onclick="confirmarNuevosProductos()"> ACTUALIZAR STOCK</button>
+                <button onclick="confirmarNuevosProductosYordenCompra()"> ACTUALIZAR STOCK + ORDEN DE COMPRA</button>
                 <button onclick="cerrarVentanas()">SALIR AL MENU</button>
         `;
     mostrarCarritoNuevosProductos();
@@ -402,18 +406,25 @@ async function confirmarNuevosProductos() {
   carritoNuevosProductos.forEach((element) => {
     productList.push(element);
   });
+  
+  try {
+    const ALGO = await (
+      await fetch("/api/enviarOrdenDeEntrada", {
+        method: "post",
+        body: JSON.stringify(carritoNuevosProductos),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    ).json();
+  } catch {
+    window.alert("FALLA AL ENVIAR ORDEN");
+  }
   carritoNuevosProductos = [];
-
-  // try{
-  //             //quiero que mande la orden de  nuevos productos
-  // }
-  // catch{
-
-  // }
 
   //metodo post al back
   try {
-    const ALGO = await (
+    const ALGOS = await (
       await fetch("/api/actualizarProductos", {
         method: "post",
         body: JSON.stringify(productList),
@@ -422,6 +433,7 @@ async function confirmarNuevosProductos() {
         },
       })
     ).json();
+    window.alert("NUEVOS PRODUCTOS AGREGADOS CORRECTAMENTE");
   } catch {
     window.alert("FALLA AL AGREGAR NUEVOS PRODUCTOS");
   }
@@ -430,11 +442,30 @@ async function confirmarNuevosProductos() {
   carritoNuevosProductos = [];
 
   productosSeleccionados = [];
-  window.alert("NUEVOS PRODUCTOS AGREGADOS CORRECTAMENTE");
+  
   cerrarVentanas();
 }
 
+
+
+
+
+
+
 async function confirmarIngreso() {
+  try {
+    const ALGOTR = await (
+      await fetch("/api/entradaProductosOrden", {
+        method: "post",
+        body: JSON.stringify(carritoIngreso),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    ).json();
+  } catch {
+    window.alert("FALLA AL AGREGAR MERCADERIA");
+  }
   fetchProducts();
   carritoIngreso.forEach((element) => {
     let productoBuscado = productList.find((p) => p.codigo === element.codigo);
@@ -578,3 +609,23 @@ function ocultarArticulosPorPalabras(){
 }
 
 //termina buscador por palabras
+
+
+async function displayProducts() {
+  let productsHTML = "";
+  
+  productList.forEach((element) => {
+    productsHTML += `
+        <div class="product-container">
+            <h3>${element.codigo}</h3>
+            <h3>${element.descripcion}</h3>
+            <h3>Rubro: ${element.rubro}</h3>
+            <h3>Subrubro: ${element.subrubro}</h3>
+            <h3>precio: $${element.precio}</h3>
+            <h3>stock: ${element.stock}</h3>
+        </div>
+           
+        `;
+        document.getElementById("ventana1").innerHTML = productsHTML;
+  });
+}
