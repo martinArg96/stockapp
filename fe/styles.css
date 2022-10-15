@@ -19,6 +19,18 @@ button{
 
 }
 
+button:hover{
+    cursor: pointer;
+    background-color: rgb(255, 255, 255);
+}
+
+button:active{
+    cursor: pointer;
+    background-color: rgb(176, 210, 176);
+}
+
+
+
 input{
     font-size: 1.2rem;
 }
@@ -110,6 +122,7 @@ main{
 }
 .menu-container div:hover{
     cursor: pointer;
+    background-color: aliceblue;
 }
 
 /* comportanmiento de ventanas generales */
@@ -260,4 +273,10 @@ li{
     margin: .3rem;
     background-color: #b2b38648;
     
+}
+
+a{
+    color: #0a187b;
+    text-decoration: none;
+    font-size: large;
 }

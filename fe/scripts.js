@@ -12,6 +12,7 @@ let productosSeleccionados = [];
 
 let ordenVenta = [];
 let ordenIngreso = [];
+let total = 0 //total precio productos seleccionados
 
 let cantidadASumar = 0;
 
@@ -45,7 +46,7 @@ async function mostrarVentana(ventanaId, opcionMenu) {
     <input type="number" id="cambiar-precio-input" placeholder=" INGRESE NUEVO PRECIO">
     <input id="agregar-varios-input" type="number" placeholder="INGRESE CANTIDAD">
 </div>
-<button id="orden-venta" onclick="confirmarVenta('orden-venta')">CONFIRMAR VENTA</button>
+<button id="orden-venta" onclick="confirmarVenta('orden-venta')">CONFIRMAR VENTA $${total}</button>
 <button class="calcular-vuelto" onclick="calcularVuelto()">CERRAR</button>
         <button class="cerrar-ventana1" id="cerrar-ventana1" onclick="cerrarVentana('ventana1')">CERRAR</button>
         
@@ -125,7 +126,42 @@ async function mostrarVentana(ventanaId, opcionMenu) {
   }else if (opcionMenu == "menu-stock"){
     displayProducts()
     
+  }else if (opcionMenu == "menu-precios"){
+    document.getElementById("container1").innerHTML = `
+    <div class="ventana-precios" id="ventana-precios">
+        
+        <input type="number" id="codigoByTeclado" class="codigoByTeclado" placeholder="CODIGO DE BARRAS">
+        
+        <button id="btn-buscar-codigoByTeclado" class="btn-buscar-codigoByTeclado" onclick="findProductByCodigo() " >BUSCAR POR CODIGO</button>
+        
+        <div class="buscador-por-palabras-div">
+            <input type="text" name="buscador-por-palabras" id="buscador-por-palabras" placeholder="Buscar por palabras" autocomplete="off" onfocusout="ocultarArticulosPorPalabras()">
+    
+            <ul id="listaArticulos" class="listaArticulos">
+                <!-- aca se insertan articulos buscados por palabra -->
+            </ul>
+
+        </div> 
+        
+        <button> CANCELAR </button>
+        <h3>PRODUCTOS ENCONTRADOS</h3>
+        <div id="productos-seleccionados"> </div>
+        <input type="number" id="cambiar-precio-input" placeholder=" INGRESE NUEVO PRECIO">
+        
+    </div>
+
+        <button id="orden-precios" onclick="confirmarNuevosPrecios()">CONFIRMAR NUEVOS PRECIOS</button>
+        <button class="cerrar-ventana1" id="cerrar-ventana1" onclick="cerrarVentana('ventana1')">CERRAR</button>
+    `;
+    activarBuscadorPorPalabras();
+    
+    
+    
+    
+    
   }
+
+  
 }
 
 async function cerrarVentana(ventanaId) {
@@ -137,6 +173,7 @@ async function cerrarVentana(ventanaId) {
   carritoNuevosProductos = [];
   nombresDesplegados = false;
   productosSeleccionados = [];
+  total= 0
   await fetchProducts();
 }
 async function cerrarVentanas() {
@@ -144,7 +181,7 @@ async function cerrarVentanas() {
   document.getElementById("ventana1").classList.add("cerrar-ventana");
   document.getElementById("ventana2").classList.remove("mostrar-ventana");
   document.getElementById("ventana2").classList.add("cerrar-ventana");
-
+  total= 0
   carritoNuevosProductos = [];
   nombresDesplegados = false;
   productosSeleccionados = [];
@@ -298,6 +335,44 @@ function mostrarProductosSeleccionados() {
     });
   }
 }
+function mostrarProductosSeleccionadosPrecios() {
+  if (productosSeleccionados[0]) {
+    
+    let productosSeleccionadosHTML = "";
+    let idDinamico = 1; //que?
+    productosSeleccionados.forEach((element) => {
+      productosSeleccionadosHTML += `<div class="product-container">
+        <span class="product-property">${element.codigo}</span>
+        <span class="product-property">${element.descripcion}</span>
+        <!--  -->
+        <!-- <span class="product-property">Rubro: ${element.rubro}</span> --> 
+        <!--  <span class="product-property">Subrubro: ${element.subrubro}</span> -->
+        <span class="product-property">precio: $${element.precio}</span>
+      
+        
+        <button onclick="cambiarPrecio(${element.codigo})" >cambiar precio</button>
+        <span class="product-property">En stock: ${element.stock}</span>
+        
+        
+      
+        
+        <div>
+
+
+
+        
+        </div>
+        
+        
+    </div>
+    `;
+
+      document.getElementById("productos-seleccionados").innerHTML =
+        productosSeleccionadosHTML;
+    });
+  }
+}
+
 function cambiarPrecio(codigo) {
   let nuevoPrecio = document.getElementById(
     "cambiar-precio-input"
@@ -323,7 +398,7 @@ function agregarUno(codigo) {
   let index = productosSeleccionados.indexOf(productoBuscadoAgregar);
   productosSeleccionados[index].cantidad++;
   console.log(productosSeleccionados[index]);
-
+  mostrarPrecioTotalVenta()
   mostrarProductosSeleccionados();
 }
 function agregarVarios(codigo) {
@@ -345,7 +420,7 @@ function agregarVarios(codigo) {
   cantidadASumar = 0;
   document.getElementById("agregar-varios-input").value = "";
   console.log(productosSeleccionados[indexVarios]);
-
+  mostrarPrecioTotalVenta()
   mostrarProductosSeleccionados();
 }
 
@@ -358,6 +433,7 @@ function confirmarSeleccion(tipoOrden) {
       carritoNuevosProductos.push(element);
     });
     productosSeleccionados = [];
+    total = 0
     console.log("carritoNuevosProductos:", carritoNuevosProductos);
     mostrarVentana2(tipoOrden);
   }
@@ -389,7 +465,7 @@ async function confirmarVenta(){
         window.alert("FALLA EN LA VENTA");
       }
       await fetchProducts();
-    
+      total = 0
       
     
       productosSeleccionados = [];
@@ -448,6 +524,32 @@ async function confirmarNuevosProductos() {
 
 
 
+async function confirmarNuevosPrecios(){
+  productosSeleccionados.forEach((element) => {
+    let productoBuscado = productosSeleccionados.find((p) => p.codigo === element.codigo);
+    let index = productList.indexOf(productoBuscado);
+    productList[index].precio = element.precio;
+  
+})
+try {
+  const ALGO = await (
+    await fetch("/api/actualizarProductos", {
+      method: "post",
+      body: JSON.stringify(productList),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+  ).json();
+} catch {
+  window.alert("FALLA AL ACTUALIZAR PRECIOS");
+}
+productosSeleccionados = [];
+  window.alert("PRECIOS ACTUALIZADOS");
+  cerrarVentanas();
+}
+
+
 
 
 
@@ -464,7 +566,7 @@ async function confirmarIngreso() {
       })
     ).json();
   } catch {
-    window.alert("FALLA AL AGREGAR MERCADERIA");
+    window.alert("FALLA ORDEN DE INGRESO");
   }
   fetchProducts();
   carritoIngreso.forEach((element) => {
@@ -496,8 +598,23 @@ async function confirmarIngreso() {
   cerrarVentanas();
 }
 
-  
- 
+function mostrarPrecioTotalVenta(){
+  let botonConfirmarVenta = document.getElementById("orden-venta")
+  if(botonConfirmarVenta){
+  try{
+    total= 0;
+productosSeleccionados.forEach(element => {
+  if (element.precio && element.cantidad){
+  total+= element.precio * element.cantidad
+  }
+});
+document.getElementById("orden-venta").innerHTML= ` CONFIRMAR VENTA $${total}  `
+  }
+  catch{
+    console.log("no se pudo calcular precio")
+  }
+}
+}
 
 function findProductByCodigo() {
   let codigo = document.getElementById("codigoByTeclado").valueAsNumber;
@@ -509,6 +626,7 @@ function findProductByCodigo() {
     if (productoBuscado) {
       productoBuscado.cantidad = 1;
       productosSeleccionados.push(productoBuscado);
+      mostrarPrecioTotalVenta()
       productoBuscado = null;
       mostrarProductosSeleccionados();
       inputBarras.focus()
@@ -527,6 +645,36 @@ function findProductByCodigo() {
 window.onload = async () => {
   await fetchProducts();
   
+};
+
+function findProductByCodigoPrecio() {
+  let codigo = document.getElementById("codigoByTeclado").valueAsNumber;
+  inputBarras = document.getElementById("codigoByTeclado")
+  if (codigo) {
+    let productoRepetido = productosSeleccionados.find((p) => p.codigo === codigo)
+    if (!productoRepetido){
+    let productoBuscado = productList.find((p) => p.codigo === codigo);
+    if (productoBuscado) {
+      productoBuscado.cantidad = 1; //no hace falta
+      productosSeleccionados.push(productoBuscado);
+      productoBuscado = null;
+      mostrarProductosSeleccionadosPrecios();
+      inputBarras.focus()
+    } else {
+      window.alert("NO SE ENCONTRO EL PRODUCTO");
+    }
+  }else {
+    console.log("el producto ya se encuentra seleccionado")
+    window.alert("producto ya esta seleccionado")
+    }
+  document.getElementById("codigoByTeclado").value = "";
+  console.log("no se ingreso codigo de barras");
+} 
+}
+
+window.onload = async () => {
+  await fetchProducts();
+  total = 0
 };
 
 //BUSCADOR POR PALABRAS
@@ -599,6 +747,7 @@ function agregarProductoSeleccionadoPorNombre(codigo) {
   document.querySelectorAll(".articulo-nombre").forEach((articulo) => {
     articulo.classList.add("filtro");
   });
+  mostrarPrecioTotalVenta()
   mostrarProductosSeleccionados();
 }
 }
