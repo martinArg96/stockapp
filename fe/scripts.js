@@ -46,10 +46,11 @@ async function mostrarVentana(ventanaId, opcionMenu) {
     <input type="number" id="cambiar-precio-input" placeholder=" INGRESE NUEVO PRECIO">
     <input id="agregar-varios-input" type="number" placeholder="INGRESE CANTIDAD">
 </div>
+<div class ="footer-venta">
 <button id="orden-venta" onclick="confirmarVenta('orden-venta')">CONFIRMAR VENTA $${total}</button>
-<button class="calcular-vuelto" onclick="calcularVuelto()">CERRAR</button>
+
         <button class="cerrar-ventana1" id="cerrar-ventana1" onclick="cerrarVentana('ventana1')">CERRAR</button>
-        
+        </div>    
         
         `
         inputBarras = document.getElementById("codigoByTeclado")
