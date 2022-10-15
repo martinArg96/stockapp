@@ -48,10 +48,12 @@ input{
     height: 3rem;
 } 
 .articulo-nombre{
-    font-size: 1.2rem;
+    position: relative;
+    left: -2rem;
+    font-size: 1rem;
     padding: .3rem;
     margin: auto;
-    width: 80%;
+    width: 85vw;
     height: 2.7rem;
     border: 1px solid #0a187b;
     border-radius: .2rem;
@@ -66,8 +68,9 @@ input{
 
 .articulo-nombre button{
     font-size: 1.2rem;
+    width: 5rem;
+    min-width: 5rem;
     
-    min-width: 25%;
 }
 
 .header {
@@ -221,7 +224,7 @@ li{
 /* fin buscador */
 
 .codigoByTeclado{
-    width: 40%;
+    width: 80%;
     height: 3rem;
     border-radius: .2rem;
     border: 1px solid orangered;
@@ -229,10 +232,11 @@ li{
 }
 
 .btn-buscar-codigoByTeclado{
-    width: 40%;
+    width: 80%;
     height: 3rem;
     border-radius: .2rem;
     border: 1px solid orangered;
+    font-size: 1rem;
 }
 
 .ventana-ingreso{
@@ -290,6 +294,6 @@ a{
     left: -1rem;
     margin-bottom: 1rem;
     width: 99vw;
-    background-color: rgba(128, 128, 128, 0.484);
+    background-color: rgba(31, 30, 30, 0.872);
     padding: .2rem;
 }

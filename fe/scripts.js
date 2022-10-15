@@ -378,6 +378,7 @@ function cambiarPrecio(codigo) {
   let nuevoPrecio = document.getElementById(
     "cambiar-precio-input"
   ).valueAsNumber;
+  if(nuevoPrecio){
   let productoBuscadoPrecio = productosSeleccionados.find(
     (p) => p.codigo === codigo
   );
@@ -388,6 +389,9 @@ function cambiarPrecio(codigo) {
   console.log(productosSeleccionados[indexNuevoPrecio]);
   document.getElementById("cambiar-precio-input").value = "";
   mostrarProductosSeleccionados();
+  } else{
+    window.alert("PRIMERO INGRESE EL PRECIO EN EL CASILLERO CORRESPONDIENTE")
+  }
 }
 
 function agregarUno(codigo) {
@@ -407,6 +411,7 @@ function agregarVarios(codigo) {
   cantidadASumar = document.getElementById(
     "agregar-varios-input"
   ).valueAsNumber;
+  if(cantidadASumar){
   let productoBuscadoAgregarVarios = productosSeleccionados.find(
     (p) => p.codigo === codigo
   );
@@ -423,6 +428,9 @@ function agregarVarios(codigo) {
   console.log(productosSeleccionados[indexVarios]);
   mostrarPrecioTotalVenta()
   mostrarProductosSeleccionados();
+} else {
+  window.alert("PRIMERO INGRESE LA CANTIDAD")
+}
 }
 
 function confirmarSeleccion(tipoOrden) {
@@ -724,7 +732,7 @@ function mostrarNombresDeProductList() {
     nombreProductoHTML += `
     
             <li class="articulo-nombre">${element.descripcion}
-            <button onclick="agregarProductoSeleccionadoPorNombre(${element.codigo})"> SELECCIONAR </button></li>
+            <button onclick="agregarProductoSeleccionadoPorNombre(${element.codigo})"> + </button></li>
             
             
         `;
